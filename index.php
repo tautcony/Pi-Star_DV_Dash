@@ -119,10 +119,7 @@ if ( ($_SERVER["PHP_SELF"] == "/admin/index.php") && version_compare($configPist
 if ($_SERVER["PHP_SELF"] == "/admin/index.php") {
 	echo '<div class="contentwide">'."\n";
 	echo '<script type="text/javascript">'."\n";
-	echo 'function reloadSysInfo(){'."\n";
-	echo '  $("#sysInfo").load("/dstarrepeater/system.php",function(){ setTimeout(reloadSysInfo,15000) });'."\n";
-	echo '}'."\n";
-	echo 'setTimeout(reloadSysInfo,15000);'."\n";
+	echo 'PiStarDashboard.setupSysInfo();'."\n";
 	echo '$(window).trigger(\'resize\');'."\n";
 	echo '</script>'."\n";
 	echo '<div id="sysInfo">'."\n";
@@ -150,10 +147,7 @@ if (file_exists('/etc/dstar-radio.mmdvmhost')) {
 
 	echo '<div class="nav">'."\n";					// Start the Side Menu
 	echo '<script type="text/javascript">'."\n";
-	echo 'function reloadRepeaterInfo(){'."\n";
-	echo '  $("#repeaterInfo").load("/mmdvmhost/repeaterinfo.php",function(){ setTimeout(reloadRepeaterInfo,1000) });'."\n";
-	echo '}'."\n";
-	echo 'setTimeout(reloadRepeaterInfo,1000);'."\n";
+	echo 'PiStarDashboard.setupRepeaterInfo();'."\n";
 	echo '$(window).trigger(\'resize\');'."\n";
 	echo '</script>'."\n";
 	echo '<div id="repeaterInfo">'."\n";
@@ -168,10 +162,7 @@ if (file_exists('/etc/dstar-radio.mmdvmhost')) {
 
 	if ($_SERVER["PHP_SELF"] == "/admin/index.php") { 		// Admin Only Option
 		echo '<script type="text/javascript">'."\n";
-		echo 'function reloadrefLinks(){'."\n";
-		echo '  $("#refLinks").load("/dstarrepeater/active_reflector_links.php",function(){ setTimeout(reloadrefLinks,15000) });'."\n";
-		echo '}'."\n";
-		echo 'setTimeout(reloadrefLinks,15000);'."\n";
+		echo 'PiStarDashboard.setupRefLinks();'."\n";
 		echo '$(window).trigger(\'resize\');'."\n";
 		echo '</script>'."\n";
 		echo '<div id="refLinks">'."\n";
@@ -184,10 +175,7 @@ if (file_exists('/etc/dstar-radio.mmdvmhost')) {
 		}
 
         echo '<script type="text/javascript">'."\n";
-        echo 'function reloadcssConnections(){'."\n";
-        echo '  $("#cssConnects").load("/dstarrepeater/css_connections.php",function(){ setTimeout(reloadcssConnections,15000) });'."\n";
-        echo '}'."\n";
-        echo 'setTimeout(reloadcssConnections,15000);'."\n";
+        echo 'PiStarDashboard.setupCssConnections();'."\n";
 	echo '$(window).trigger(\'resize\');'."\n";
         echo '</script>'."\n";
         echo '<div id="cssConnects">'."\n";

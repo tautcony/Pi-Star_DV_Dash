@@ -102,6 +102,20 @@ var PiStarDashboard = (function() {
         setupAutoReload('localTx', '/dstarrepeater/local_tx.php', 3000);
     }
     
+    /**
+     * Setup system info auto-reload
+     */
+    function setupSysInfo() {
+        setupAutoReload('sysInfo', '/dstarrepeater/system.php', 15000);
+    }
+    
+    /**
+     * Setup repeater info auto-reload
+     */
+    function setupRepeaterInfo() {
+        setupAutoReload('repeaterInfo', '/mmdvmhost/repeaterinfo.php', 1000);
+    }
+    
     // Public API
     return {
         setupAutoReload: setupAutoReload,
@@ -115,6 +129,8 @@ var PiStarDashboard = (function() {
         setupCssConnections: setupCssConnections,
         setupStarNetGroups: setupStarNetGroups,
         setupDstarLastHerd: setupDstarLastHerd,
-        setupDstarLocalTx: setupDstarLocalTx
+        setupDstarLocalTx: setupDstarLocalTx,
+        setupSysInfo: setupSysInfo,
+        setupRepeaterInfo: setupRepeaterInfo
     };
 })();
