@@ -1,6 +1,7 @@
 <?php
 require_once('config/version.php');
 require_once('config/ircddblocal.php');
+require_once('config/common.php');
 require_once('config/language.php');
 $configs = array();
 if ($configfile = fopen($gatewayConfigPath,'r')) {
@@ -17,22 +18,13 @@ $rev=$version;
 //$MYCALL=strtoupper($callsign);
 $MYCALL=strtoupper($configs['gatewayCallsign']);
 
-// Check if the config file exists
-if (file_exists('/etc/pistar-css.ini')) {
-	$piStarCssFile = '/etc/pistar-css.ini';
-	if (fopen($piStarCssFile,'r')) { $piStarCss = parse_ini_file($piStarCssFile, true); }
-	if ($piStarCss['BannerH1']['Enabled']) {
-		$piStarCssBannerH1 = $piStarCss['BannerH1']['Text'];
-	}
-	if ($piStarCss['BannerExtText']['Enabled']) {
-		$piStarCssBannerExtTxt = $piStarCss['BannerExtText']['Text'];
-	}
-}
+// Use centralized banner configuration
+$bannerConfig = getBannerConfig();
+$piStarCssBannerH1 = $bannerConfig['h1'];
+$piStarCssBannerExtTxt = $bannerConfig['extText'];
 
-//Load the Pi-Star Release file
-$pistarReleaseConfig = '/etc/pistar-release';
-$configPistarRelease = array();
-$configPistarRelease = parse_ini_file($pistarReleaseConfig, true);
+// Load the Pi-Star Release file using centralized function
+$configPistarRelease = loadPiStarReleaseConfig();
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -59,6 +51,7 @@ $configPistarRelease = parse_ini_file($pistarReleaseConfig, true);
     <script type="text/javascript">
       $.ajaxSetup({ cache: false });
     </script>
+    <script type="text/javascript" src="/js/dashboard.js"></script>
 </head>
 <body>
 <?php
@@ -203,13 +196,7 @@ if (file_exists('/etc/dstar-radio.mmdvmhost')) {
 	}
 
 	if ($_SERVER["PHP_SELF"] == "/admin/index.php") { 		// Admin Only Option
-		echo '<script type="text/javascript">'."\n";
-        	echo 'function reloadbmConnections(){'."\n";
-        	echo '  $("#bmConnects").load("/mmdvmhost/bm_links.php",function(){ setTimeout(reloadbmConnections,180000) });'."\n";
-        	echo '}'."\n";
-        	echo 'setTimeout(reloadbmConnections,180000);'."\n";
-		echo '$(window).trigger(\'resize\');'."\n";
-        	echo '</script>'."\n";
+		echo '<script type="text/javascript">PiStarDashboard.setupBmConnections();</script>'."\n";
         	echo '<div id="bmConnects">'."\n";
 		include 'mmdvmhost/bm_links.php';                       // BM Links
 		echo '</div>'."\n";
@@ -218,13 +205,7 @@ if (file_exists('/etc/dstar-radio.mmdvmhost')) {
                 include 'mmdvmhost/bm_manager.php';                     // BM DMR Link Manager
         }
 	if ($_SERVER["PHP_SELF"] == "/admin/index.php") { 		// Admin Only Option
-		echo '<script type="text/javascript">'."\n";
-        	echo 'function reloadtgifConnections(){'."\n";
-        	echo '  $("#tgifConnects").load("/mmdvmhost/tgif_links.php",function(){ setTimeout(reloadtgifConnections,180000) });'."\n";
-        	echo '}'."\n";
-        	echo 'setTimeout(reloadtgifConnections,180000);'."\n";
-		echo '$(window).trigger(\'resize\');'."\n";
-        	echo '</script>'."\n";
+		echo '<script type="text/javascript">PiStarDashboard.setupTgifConnections();</script>'."\n";
         	echo '<div id="tgifConnects">'."\n";
 		include 'mmdvmhost/tgif_links.php';			// TGIF Links
 		echo '</div>'."\n";
@@ -257,14 +238,8 @@ if (file_exists('/etc/dstar-radio.mmdvmhost')) {
 		}
 	}
 	echo '<script type="text/javascript">'."\n";
-	echo 'function reloadLocalTx(){'."\n";
-	echo '  $("#localTxs").load("/mmdvmhost/localtx.php",function(){ setTimeout(reloadLocalTx,1500) });'."\n";
-	echo '}'."\n";
-	echo 'setTimeout(reloadLocalTx,1500);'."\n";
-	echo 'function reloadLastHerd(){'."\n";
-	echo '  $("#lastHerd").load("/mmdvmhost/lh.php",function(){ setTimeout(reloadLastHerd,1500) });'."\n";
-	echo '}'."\n";
-	echo 'setTimeout(reloadLastHerd,1500);'."\n";
+	echo 'PiStarDashboard.setupLocalTx();'."\n";
+	echo 'PiStarDashboard.setupLastHeard();'."\n";
 	echo '$(window).trigger(\'resize\');'."\n";
 	echo '</script>'."\n";
 	echo '<div id="lastHerd">'."\n";
@@ -279,10 +254,7 @@ if (file_exists('/etc/dstar-radio.mmdvmhost')) {
 	$testMMDVModePOCSAG = getConfigItem("POCSAG Network", "Enable", $mmdvmconfigfile);
 	if ( $testMMDVModePOCSAG == 1 ) {
 		echo '<script type="text/javascript">'."\n";
-		echo 'function reloadPages(){'."\n";
-		echo '  $("#Pages").load("/mmdvmhost/pages.php",function(){ setTimeout(reloadPages,5000) });'."\n";
-		echo '}'."\n";
-		echo 'setTimeout(reloadPages,5000);'."\n";
+		echo 'PiStarDashboard.setupPages();'."\n";
 		echo '$(window).trigger(\'resize\');'."\n";
 		echo '</script>'."\n";
 		echo "<br />\n";
@@ -295,10 +267,7 @@ if (file_exists('/etc/dstar-radio.mmdvmhost')) {
         echo '<div class="contentwide">'."\n";
 	include 'dstarrepeater/gateway_software_config.php';		// dstarrepeater gateway config
 	echo '<script type="text/javascript">'."\n";
-	echo 'function reloadrefLinks(){'."\n";
-	echo '  $("#refLinks").load("/dstarrepeater/active_reflector_links.php",function(){ setTimeout(reloadrefLinks,15000) });'."\n";
-	echo '}'."\n";
-	echo 'setTimeout(reloadrefLinks,15000);'."\n";
+	echo 'PiStarDashboard.setupRefLinks();'."\n";
 	echo '$(window).trigger(\'resize\');'."\n";
 	echo '</script>'."\n";
         echo '<br />'."\n";
@@ -312,10 +281,7 @@ if (file_exists('/etc/dstar-radio.mmdvmhost')) {
 		}
 
 	echo '<script type="text/javascript">'."\n";
-        echo 'function reloadcssConnections(){'."\n";
-        echo '  $("#cssConnects").load("/dstarrepeater/css_connections.php",function(){ setTimeout(reloadcssConnections,15000) });'."\n";
-        echo '}'."\n";
-        echo 'setTimeout(reloadcssConnections,15000);'."\n";
+	echo 'PiStarDashboard.setupCssConnections();'."\n";
 	echo '$(window).trigger(\'resize\');'."\n";
         echo '</script>'."\n";
         echo '<div id="cssConnects">'."\n";
@@ -323,14 +289,8 @@ if (file_exists('/etc/dstar-radio.mmdvmhost')) {
 	echo '</div>'."\n";
 
 	echo '<script type="text/javascript">'."\n";
-	echo 'function reloadLocalTx(){'."\n";
-	echo '  $("#localTx").load("/dstarrepeater/local_tx.php",function(){ setTimeout(reloadLocalTx,3000) });'."\n";
-	echo '}'."\n";
-	echo 'setTimeout(reloadLocalTx,3000);'."\n";
-	echo 'function reloadLastHerd(){'."\n";
-	echo '  $("#lh").load("/dstarrepeater/last_herd.php",function(){ setTimeout(reloadLastHerd,3000) });'."\n";
-	echo '}'."\n";
-	echo 'setTimeout(reloadLastHerd,3000);'."\n";
+	echo 'PiStarDashboard.setupDstarLocalTx();'."\n";
+	echo 'PiStarDashboard.setupDstarLastHerd();'."\n";
 	echo '$(window).trigger(\'resize\');'."\n";
 	echo '</script>'."\n";
 	echo '<div id="lh">'."\n";

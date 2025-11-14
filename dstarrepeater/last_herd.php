@@ -1,4 +1,5 @@
 <?php include_once $_SERVER['DOCUMENT_ROOT'].'/config/ircddblocal.php';
+include_once $_SERVER['DOCUMENT_ROOT'].'/config/common.php';          // Common Configuration
 include_once $_SERVER['DOCUMENT_ROOT'].'/config/language.php';	      // Translation Code
 $configs = array();
 
@@ -15,26 +16,9 @@ $progname = basename($_SERVER['SCRIPT_FILENAME'],".php");
 $rev="20141101";
 $MYCALL=strtoupper($callsign);
 
-// Check if the config file exists
-if (file_exists('/etc/pistar-css.ini')) {
-    // Use the values from the file
-    $piStarCssFile = '/etc/pistar-css.ini';
-    if (fopen($piStarCssFile,'r')) { $piStarCss = parse_ini_file($piStarCssFile, true); }
-
-    // Set the Values from the config file
-    if (isset($piStarCss['Lookup']['Service'])) { $callsignLookupSvc = $piStarCss['Lookup']['Service']; }		// Lookup Service "QRZ" or "RadioID"
-    else { $callsignLookupSvc = "RadioID"; }										// Set the default if its missing										// Set the default if its missing
-} else {
-    // Default values
-    $callsignLookupSvc = "RadioID";
-}
-
-// Safety net
-if (($callsignLookupSvc != "RadioID") && ($callsignLookupSvc != "QRZ")) { $callsignLookupSvc = "RadioID"; }
-
-// Setup the URL(s)
-if ($callsignLookupSvc == "RadioID") { $callsignLookupUrl = "https://database.radioid.net/database/view?callsign="; }
-if ($callsignLookupSvc == "QRZ") { $callsignLookupUrl = "https://www.qrz.com/db/"; }
+// Get lookup URLs using centralized configuration
+$lookupUrls = getLookupUrls();
+$callsignLookupUrl = $lookupUrls['callsign'];
 
 ?>
     <b><?php echo $lang['last_heard_list'];?></b>
