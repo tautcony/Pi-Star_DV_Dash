@@ -3,7 +3,7 @@
 // Translated by Le Peng（BD7KLE）, Email: bd7kle@gmail.com
 //               Yuan Wang（BG3MDO）, Email: bg3mdo@gmail.com
 // Maintained by Yuan Wang（BG3MDO）, Email: bg3mdo@gmail.com 
-// Last update on 03/08/2017
+// Last update on 14/11/2025
 
 $lang = array (
   // Banner texts
@@ -25,12 +25,13 @@ $lang = array (
   "general_config"              =>  "常规配置",
   "dmr_config"                  =>  "DMR 配置",
   "dstar_config"                =>  "D-Star 配置",
-  "ysf_config"                  =>  "Yaesu System Fusion 配置",
+  "ysf_config"                  =>  "YSF 配置",
   "p25_config"                  =>  "P25 配置",
   "nxdn_config"                 =>  "NXDN 配置",
-  "m17_config"                  =>  "M17 Configuration",
+  "m17_config"                  =>  "M17 配置",
   "pocsag_config"               =>  "POCSAG 配置",
-  "mobilegps_config"            =>  "Mobile GPS Configuration",
+  "mobilegps_config"            =>  "外部 GPS 配置",
+  "wifi_config"                 =>  "无线配置",
   "fw_config"                   =>  "防火墙配置",
   "remote_access_pw"            =>  "远程访问密码",
   // Config Page - Section General
@@ -41,7 +42,7 @@ $lang = array (
   "hostname"                    =>  "主机名",
   "kernel"                      =>  "内核",
   "platform"                    =>  "平台",
-  "cpu_load"                    =>  "CPU 负荷",
+  "cpu_load"                    =>  "CPU 负载",
   "cpu_temp"                    =>  "CPU 温度",
   // Config Page - Control Software
   "controller_software"         =>  "控制器软件",
@@ -52,7 +53,7 @@ $lang = array (
   "ysf_mode"                    =>  "YSF 模式",
   "p25_mode"                    =>  "P25 模式",
   "nxdn_mode"                   =>  "NXDN 模式",
-  "m17_mode"                    =>  "M17 Mode",
+  "m17_mode"                    =>  "M17 模式",
   "mmdvm_display"               =>  "MMDVM 显示屏类型",
   "mode_hangtime"               =>  "模式停留时间",
   // Config Page - General Configuration
@@ -70,11 +71,11 @@ $lang = array (
   "dash_lang"                   =>  "仪表盘语言",
   // Config Page - DMR Configuration
   "dmr_master"                  =>  "DMR 主机 (MMDVMHost)",
-  "bm_master"                   =>  "BrandMeister 主机 ",
+  "bm_master"                   =>  "BrandMeister 主机",
   "bm_network"                  =>  "BrandMeister 网络",
-  "dmr_plus_master"             =>  "DMR+ 主机 ",
+  "dmr_plus_master"             =>  "DMR+ 主机",
   "dmr_plus_network"            =>  "DMR+ 网络",
-  "xlx_master"                  =>  "XLX 主机 ",
+  "xlx_master"                  =>  "XLX 主机",
   "xlx_enable"                  =>  "XLX 主机启用",
   "dmr_cc"                      =>  "DMR 彩色码",
   "dmr_embeddedlconly"          =>  "DMR EmbeddedLCOnly",
@@ -82,9 +83,9 @@ $lang = array (
   // Config Page - D-Star Configuration
   "dstar_rpt1"                  =>  "RPT1 呼号",
   "dstar_rpt2"                  =>  "RPT2 呼号",
-  "dstar_irc_password"          =>  "ircDDBGateway 密码",
+  "dstar_irc_password"          =>  "远程密码",
   "dstar_default_ref"           =>  "默认反射器",
-  "aprs_host"                   =>  "APRS 服务器",
+  "aprs_host"                   =>  "APRS 主机",
   "dstar_irc_lang"              =>  "ircDDBGateway 语言",
   "dstar_irc_time"              =>  "时间通告",
   // Config Page - YSF Configuration
@@ -93,25 +94,25 @@ $lang = array (
   "p25_startup_host"            =>  "P25 默认服务器",
   "p25_nac"                     =>  "P25 NAC",
   // Config Page - NXDN Configuration
-  "nxdn_startup_host"            =>  "NXDN 默认服务器",
-  "nxdn_ran"                     =>  "NXDN RAN",
+  "nxdn_startup_host"           =>  "NXDN 默认服务器",
+  "nxdn_ran"                    =>  "NXDN RAN",
   // Config Page - M17 Configuration
-  "m17_startup_host"            =>  "M17 Startup Host",
+  "m17_startup_host"            =>  "M17 默认服务器",
   "m17_can"                     =>  "M17 CAN",
   // Config Page - MobileGPS Configuration
-  "mobilegps_enable"            =>  "MobileGPS Enable",
-  "mobilegps_port"              =>  "GPS Port",
-  "mobilegps_speed"             =>  "GPS Port Speed",
+  "mobilegps_enable"            =>  "外部 GPS 启用",
+  "mobilegps_port"              =>  "GPS 端口",
+  "mobilegps_speed"             =>  "GPS 端口速度",
   // Config Page - Firewall Configuration
   "fw_dash"                     =>  "仪表盘访问",
   "fw_irc"                      =>  "ircDDBGateway 远程",
-  "fw_ssh"                      =>  "SSH访问",
+  "fw_ssh"                      =>  "SSH 访问",
   // Config Page - Password
   "user"                        =>  "用户名",
   "password"                    =>  "密码",
   "set_password"                =>  "设置密码",
   // Dashboard Front Page - Repeater Info Pannel
-  "modes_enabled"               =>  "启动的模式",
+  "modes_enabled"               =>  "启用模式",
   "net_status"                  =>  "网络状态",
   "internet"                    =>  "互联网",
   "radio_info"                  =>  "电台信息",
@@ -124,21 +125,21 @@ $lang = array (
   "p25_net"                     =>  "P25 网络",
   "nxdn_radio"                  =>  "NXDN 电台",
   "nxdn_net"                    =>  "NXDN 网络",
-  "m17_radio"                   =>  "M17 Radio",
-  "m17_net"                     =>  "M17 Network",
+  "m17_radio"                   =>  "M17 电台",
+  "m17_net"                     =>  "M17 网络",
   // Dashboard Front Page - Calls
   "time"                        =>  "时间",
   "mode"                        =>  "模式",
   "callsign"                    =>  "呼号",
   "target"                      =>  "目标",
   "src"                         =>  "源",        // Short version of "Source"
-  "dur"                         =>  "时长",      // Short version of "Duration"
+  "dur"                         =>  "时长",        // Short version of "Duration"
   "loss"                        =>  "丢失",
-  "ber"                         =>  "误码率",    // Short version of "Bit Error Rate"
+  "ber"                         =>  "BER",        // Short version of "Bit Error Rate"
   // POCSAG Specific
-  "pocsag_list"                 =>  "DAPNET Gateway Activity",
-  "pocsag_timeslot"             =>  "Time Slot",
-  "pocsag_msg"                  =>  "Message",
+  "pocsag_list"                 =>  "DAPNET 网关活动",
+  "pocsag_timeslot"             =>  "时隙",
+  "pocsag_msg"                  =>  "消息",
   // Dashboard - Extra Info
   "group"                       =>  "组",
   "logoff"                      =>  "注销",
