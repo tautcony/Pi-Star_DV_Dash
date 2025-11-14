@@ -1,31 +1,15 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'].'/config/config.php';          // MMDVMDash Config
+include_once $_SERVER['DOCUMENT_ROOT'].'/config/common.php';          // Common Configuration
 include_once $_SERVER['DOCUMENT_ROOT'].'/mmdvmhost/tools.php';        // MMDVMDash Tools
 include_once $_SERVER['DOCUMENT_ROOT'].'/mmdvmhost/functions.php';    // MMDVMDash Functions
 include_once $_SERVER['DOCUMENT_ROOT'].'/config/language.php';	      // Translation Code
 $localTXList = $lastHeard;
 
-// Check if the config file exists
-if (file_exists('/etc/pistar-css.ini')) {
-    // Use the values from the file
-    $piStarCssFile = '/etc/pistar-css.ini';
-    if (fopen($piStarCssFile,'r')) { $piStarCss = parse_ini_file($piStarCssFile, true); }
-
-    // Set the Values from the config file
-    if (isset($piStarCss['Lookup']['Service'])) { $callsignLookupSvc = $piStarCss['Lookup']['Service']; }		// Lookup Service "QRZ" or "RadioID"
-    else { $callsignLookupSvc = "RadioID"; }										// Set the default if its missing										// Set the default if its missing
-} else {
-    // Default values
-    $callsignLookupSvc = "RadioID";
-}
-
-// Safety net
-if (($callsignLookupSvc != "RadioID") && ($callsignLookupSvc != "QRZ")) { $callsignLookupSvc = "RadioID"; }
-
-// Setup the URL(s)
-$idLookupUrl = "https://database.radioid.net/database/view?id=";
-if ($callsignLookupSvc == "RadioID") { $callsignLookupUrl = "https://database.radioid.net/database/view?callsign="; }
-if ($callsignLookupSvc == "QRZ") { $callsignLookupUrl = "https://www.qrz.com/db/"; }
+// Get lookup URLs using centralized configuration
+$lookupUrls = getLookupUrls();
+$idLookupUrl = $lookupUrls['id'];
+$callsignLookupUrl = $lookupUrls['callsign'];
 
 ?>
 <b><?php echo $lang['local_tx_list'];?></b>
